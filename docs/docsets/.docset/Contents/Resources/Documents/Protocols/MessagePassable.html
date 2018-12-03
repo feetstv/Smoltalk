@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>MessagePassable Protocol Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Protocol/MessagePassable" class="dashAnchor"></a>
+    <a title="MessagePassable Protocol Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html"> Docs</a> (74% documented)</p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html"> Reference</a>
+        <img id="carat" src="../img/carat.png" />
+        MessagePassable Protocol Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/Runtime.html">Runtime</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/SelectorInformation.html">SelectorInformation</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Enums.html">Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/SmoltalkError.html">SmoltalkError</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Extensions/Array.html">Array</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Bool.html">Bool</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Date.html">Date</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Dictionary.html">Dictionary</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Double.html">Double</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Int.html">Int</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/String.html">String</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/MessagePassable.html">MessagePassable</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Typealiases.html">Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:8Smoltalk8Functiona">Function</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>MessagePassable</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">MessagePassable</span></code></pre>
+
+                </div>
+              </div>
+            <p>Every object that should support receiving messages must conform to the MessagePassable protocol.</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8Smoltalk15MessagePassableP8messagesSDySSAA19SelectorInformationCGvp"></a>
+                    <a name="//apple_ref/swift/Property/messages" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8Smoltalk15MessagePassableP8messagesSDySSAA19SelectorInformationCGvp">messages</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A dictionary representing the messages to which the object will respond.
+ The key is a string. The value is an instance of Selector, which includes the Function that gets executed</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">messages</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span> <span class="p">:</span> <span class="kt"><a href="../Classes/SelectorInformation.html">SelectorInformation</a></span><span class="p">]</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8Smoltalk15MessagePassablePAAE15defaultMessagesSDySSAA19SelectorInformationCGvp"></a>
+                    <a name="//apple_ref/swift/Property/defaultMessages" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8Smoltalk15MessagePassablePAAE15defaultMessagesSDySSAA19SelectorInformationCGvp">defaultMessages</a>
+                    </code>
+                      <span class="declaration-note">
+                        Extension method
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The default messages to which <strong>all</strong> objects that implement MessagePassable respond</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">defaultMessages</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span> <span class="p">:</span> <span class="kt"><a href="../Classes/SelectorInformation.html">SelectorInformation</a></span><span class="p">]</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8Smoltalk15MessagePassablePAAE11description33_6E058769D424802B6DEC06CEE1BC5AD7LL3arg8userInfoAaB_pAaB_p_AaB_pSgtKF"></a>
+                    <a name="//apple_ref/swift/Method/description(arg:userInfo:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8Smoltalk15MessagePassablePAAE11description33_6E058769D424802B6DEC06CEE1BC5AD7LL3arg8userInfoAaB_pAaB_p_AaB_pSgtKF">description(arg:userInfo:)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Extension method
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">private</span> <span class="kd">func</span> <span class="nf">description</span><span class="p">(</span><span class="nv">arg</span><span class="p">:</span> <span class="kt">MessagePassable</span><span class="p">,</span> <span class="nv">userInfo</span><span class="p">:</span> <span class="kt">MessagePassable</span><span class="p">?)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">MessagePassable</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A string describing the object, same as Swift&rsquo;s String(describing: object)</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8Smoltalk15MessagePassablePAAE9selectors33_6E058769D424802B6DEC06CEE1BC5AD7LL3arg8userInfoAaB_pAaB_p_AaB_pSgtKF"></a>
+                    <a name="//apple_ref/swift/Method/selectors(arg:userInfo:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8Smoltalk15MessagePassablePAAE9selectors33_6E058769D424802B6DEC06CEE1BC5AD7LL3arg8userInfoAaB_pAaB_p_AaB_pSgtKF">selectors(arg:userInfo:)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Extension method
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">private</span> <span class="kd">func</span> <span class="nf">selectors</span><span class="p">(</span><span class="nv">arg</span><span class="p">:</span> <span class="kt">MessagePassable</span><span class="p">,</span> <span class="nv">userInfo</span><span class="p">:</span> <span class="kt">MessagePassable</span><span class="p">?)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">MessagePassable</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A string listing all of the receiver&rsquo;s selectors to which it responds</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8Smoltalk15MessagePassablePAAE18respondsToSelector33_6E058769D424802B6DEC06CEE1BC5AD7LL3arg8userInfoAaB_pAaB_p_AaB_pSgtKF"></a>
+                    <a name="//apple_ref/swift/Method/respondsToSelector(arg:userInfo:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8Smoltalk15MessagePassablePAAE18respondsToSelector33_6E058769D424802B6DEC06CEE1BC5AD7LL3arg8userInfoAaB_pAaB_p_AaB_pSgtKF">respondsToSelector(arg:userInfo:)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Extension method
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">private</span> <span class="kd">func</span> <span class="nf">respondsToSelector</span><span class="p">(</span><span class="nv">arg</span><span class="p">:</span> <span class="kt">MessagePassable</span><span class="p">,</span> <span class="nv">userInfo</span><span class="p">:</span> <span class="kt">MessagePassable</span><span class="p">?)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">MessagePassable</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>arg</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A selector</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A boolean describing whether or not the receiver responds to a given selector.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8Smoltalk15MessagePassablePAAE04sendB0_8argument8userInfoAaB_pSS_AaB_pSgAGtKF"></a>
+                    <a name="//apple_ref/swift/Method/sendMessage(_:argument:userInfo:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8Smoltalk15MessagePassablePAAE04sendB0_8argument8userInfoAaB_pSS_AaB_pSgAGtKF">sendMessage(_:argument:userInfo:)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Extension method
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sends a message to the object. Internally, this calls SMRuntime.sendMessage(_:toReceiver:argument:userInfo:)</p>
+<li>selectorString: The selector to send to the object</li>
+<li>argument: An object implementing MessagePassable. If the message is simple, this is automatically converted to an instance of SMNull.</li>
+<li><p>userInfo: An immutable object implementing MessagePassable that is present throughout the entire evaluation of the expression. This is readable by every Function called during evaluation.</p></li>
+<div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    <p>Either SmoltalkError if there was an issue with the expression, or other Errors thrown by each receiver</p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">sendMessage</span><span class="p">(</span><span class="n">_</span> <span class="nv">selectorString</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">argument</span><span class="p">:</span> <span class="kt">MessagePassable</span><span class="p">?,</span> <span class="nv">userInfo</span><span class="p">:</span> <span class="kt">MessagePassable</span><span class="p">?)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">MessagePassable</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The resultant MessagePassable that comes from evaluating the expression.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-12-03)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.4</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>
