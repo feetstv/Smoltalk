@@ -7,10 +7,15 @@
 
 import Foundation
 
-public struct SMNull: SMObject {
-    public var messages: [String: SMSelector] = [:]
+public struct SMNull: MessagePassable {
+    public static var standard: SMNull = SMNull()
+    private init() { }
+    
+    public var messages: [String: SelectorInformation] = [:]
 }
 
-public struct SMAny: SMObject {
-    public var messages: [String: SMSelector] = [:]
+public struct SMAny: MessagePassable {
+    public static var standard: SMAny = SMAny()
+    private init() { }
+    public var messages: [String: SelectorInformation] = [:]
 }

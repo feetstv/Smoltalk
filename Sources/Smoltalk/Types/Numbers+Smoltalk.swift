@@ -7,50 +7,147 @@
 
 import Foundation
 
-extension Int: SMObject {
-    public var messages: [String: SMSelector] {
+enum NumberError: LocalizedError {
+    /// Thrown when a numerical argument to SMObject.sendMessage(_:arg:userInfo) is expected to be between two bounds
+    case IntOutOfBounds(Int, Int)
+}
+
+fileprivate protocol SMNumber {
+    func adding_(arg: MessagePassable?, userInfo: MessagePassable?) throws -> MessagePassable
+    func subtracting_(arg: MessagePassable?, userInfo: MessagePassable?) throws -> MessagePassable
+    func multipliedBy_(arg: MessagePassable?, userInfo: MessagePassable?) throws -> MessagePassable
+    func dividedBy_(arg: MessagePassable?, userInfo: MessagePassable?) throws -> MessagePassable
+    func squareRoot(arg: MessagePassable?, userInfo: MessagePassable?) throws -> MessagePassable
+    func doubleValue(arg: MessagePassable?, userInfo: MessagePassable?) throws -> MessagePassable
+    func intValue(arg: MessagePassable?, userInfo: MessagePassable?) throws -> MessagePassable
+}
+
+extension Int: MessagePassable {
+    public var messages: [String: SelectorInformation] {
         get {
             return [
-                "doubled": SMSelector(argumentType: SMNull.self, returnType: Double.self) { _, _ in (self * 2) },
-                "halved": SMSelector(argumentType: SMNull.self, returnType: Double.self) { _, _ in (self > 0 ? self / 2 : nil) },
-                "adding:": SMSelector(argumentType: SMAny.self, returnType: Double.self) { arg, _ in
-                    if let string = arg as? String, let number = Double(string) { return Double(self) + number } else { return nil }
-                },
-                "subtracting:": SMSelector(argumentType: SMAny.self, returnType: Double.self) { arg, _ in
-                    if let string = arg as? String, let number = Double(string) { return Double(self) - number } else { return nil }
-                },
-                "multipliedBy:": SMSelector(argumentType: SMAny.self, returnType: Double.self) { arg, _ in
-                    if let string = arg as? String, let number = Double(string) { return Double(self) * number } else { return nil }
-                },
-                "dividedBy:": SMSelector(argumentType: SMAny.self, returnType: Double.self) { arg, _ in
-                    if let string = arg as? String, let number = Double(string) { return Double(self) / number } else { return nil }
-                },
-                "squareRoot": SMSelector(argumentType: SMNull.self, returnType: Double.self) { _, _ in Double(self).squareRoot() }
+                "adding:": SelectorInformation(argumentType: Double.self, returnType: Double.self, function: self.adding_),
+                "doubleValue": SelectorInformation(argumentType: SMNull.self, returnType: Double.self, function: self.doubleValue),
+                "subtracting:": SelectorInformation(argumentType: Double.self, returnType: Double.self, function: self.subtracting_),
+                "multipliedBy:": SelectorInformation(argumentType: Double.self, returnType: Double.self, function: self.multipliedBy_),
+                "dividedBy:": SelectorInformation(argumentType: Double.self, returnType: Double.self, function: self.dividedBy_),
+                "squareRoot": SelectorInformation(argumentType: SMNull.self, returnType: Double.self, function: self.squareRoot)
             ]
         }
     }
+    
+    /**
+     - Parameter arg: (Double) The number to add to the current value
+     
+     - Returns: (Double) The result of the calculation
+     */
+    private func adding_(arg: MessagePassable, userInfo: MessagePassable?) throws -> MessagePassable {
+        return Double(self) + (arg as! Double)
+    }
+    
+    /**
+     - Returns: (Double) The value of the Int expressed as a Double
+     */
+    private func doubleValue(arg: MessagePassable, userInfo: MessagePassable?) throws -> MessagePassable {
+        return Double(self)
+    }
+    
+    /**
+     - Parameter arg: (Double) The number to subtract from the current value
+     
+     - Returns: (Double) The result of the calculation
+     */
+    private func subtracting_(arg: MessagePassable, userInfo: MessagePassable?) throws -> MessagePassable {
+        return Double(self) - (arg as! Double)
+    }
+    
+    /**
+     - Parameter arg: (Double) The number by which to divide the current value
+     
+     - Returns: (Double) The result of the calculation
+     */
+    private func dividedBy_(arg: MessagePassable, userInfo: MessagePassable?) throws -> MessagePassable {
+        return Double(self) / (arg as! Double)
+    }
+    
+    /**
+     - Parameter arg: (Double) The number by which to multiply the current value
+     
+     - Returns: (Double) The result of the calculation
+     */
+    private func multipliedBy_(arg: MessagePassable, userInfo: MessagePassable?) throws -> MessagePassable {
+        return Double(self) * (arg as! Double)
+    }
+    
+    /**
+     - Returns: (Double) The square root of the integer
+     */
+    private func squareRoot(arg: MessagePassable, userInfo: MessagePassable?) throws -> MessagePassable {
+        return Double(self).squareRoot()
+    }
 }
 
-extension Double: SMObject {
-    public var messages: [String: SMSelector] {
+extension Double: MessagePassable {
+    public var messages: [String: SelectorInformation] {
         get {
             return [
-                "doubled": SMSelector(argumentType: SMNull.self, returnType: Double.self) { _, _ in (self * 2) },
-                "halved": SMSelector(argumentType: SMNull.self, returnType: Double.self) { _, _ in (self > 0 ? self / 2 : nil) },
-                "adding:": SMSelector(argumentType: SMAny.self, returnType: Double.self) { arg, _ in
-                    if let string = arg as? String, let number = Double(string) { return Double(self) + number } else { return nil }
-                },
-                "subtracting:": SMSelector(argumentType: SMAny.self, returnType: Double.self) { arg, _ in
-                    if let string = arg as? String, let number = Double(string) { return Double(self) - number } else { return nil }
-                },
-                "multipliedBy:": SMSelector(argumentType: SMAny.self, returnType: Double.self) { arg, _ in
-                    if let string = arg as? String, let number = Double(string) { return Double(self) * number } else { return nil }
-                },
-                "dividedBy:": SMSelector(argumentType: SMAny.self, returnType: Double.self) { arg, _ in
-                    if let string = arg as? String, let number = Double(string) { return Double(self) / number } else { return nil }
-                },
-                "squareRoot": SMSelector(argumentType: SMNull.self, returnType: Double.self) { _, _ in Double(self).squareRoot() }
+                "adding:": SelectorInformation(argumentType: Double.self, returnType: Double.self, function: self.adding_),
+                "intValue": SelectorInformation(argumentType: SMNull.self, returnType: Int.self, function: self.intValue),
+                "subtracting:": SelectorInformation(argumentType: Double.self, returnType: Double.self, function: self.subtracting_),
+                "multipliedBy:": SelectorInformation(argumentType: Double.self, returnType: Double.self, function: self.multipliedBy_),
+                "dividedBy:": SelectorInformation(argumentType: Double.self, returnType: Double.self, function: self.dividedBy_),
+                "squareRoot": SelectorInformation(argumentType: SMNull.self, returnType: Double.self, function: self.squareRoot)
             ]
         }
+    }
+    
+    /**
+     - Parameter arg: (Double) The number to add to the current value
+     
+     - Returns: (Double) The result of the calculation
+     */
+    private func adding_(arg: MessagePassable, userInfo: MessagePassable?) throws -> MessagePassable {
+        return self + (arg as! Double)
+    }
+    
+    /**
+     - Returns: (Int) The value of the Double expressed as an Int (rounding down)
+     */
+    private func intValue(arg: MessagePassable, userInfo: MessagePassable?) throws -> MessagePassable {
+        return Int(self)
+    }
+    
+    /**
+     - Parameter arg: (Double) The number to subtract from the current value
+     
+     - Returns: (Double) The result of the calculation
+     */
+    private func subtracting_(arg: MessagePassable, userInfo: MessagePassable?) throws -> MessagePassable {
+        return self - (arg as! Double)
+    }
+    
+    /**
+     - Parameter arg: (Double) The number by which to divide the current value
+     
+     - Returns: (Double) The result of the calculation
+     */
+    private func dividedBy_(arg: MessagePassable, userInfo: MessagePassable?) throws -> MessagePassable {
+        return self / (arg as! Double)
+    }
+    
+    /**
+     - Parameter arg: (Double) The number by which to multiply the current value
+     
+     - Returns: (Double) The result of the calculation
+     */
+    private func multipliedBy_(arg: MessagePassable, userInfo: MessagePassable?) throws -> MessagePassable {
+        return self * (arg as! Double)
+    }
+    
+    /**
+     - Returns: (Double) The square root of the integer
+     */
+    private func squareRoot(arg: MessagePassable, userInfo: MessagePassable?) throws -> MessagePassable {
+        return self.squareRoot()
     }
 }

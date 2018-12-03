@@ -10,6 +10,9 @@ let package = Package(
         .library(
             name: "Smoltalk",
             targets: ["Smoltalk"]),
+        .executable(
+            name: "Terp",
+            targets: ["Terp"])
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -24,5 +27,8 @@ let package = Package(
         .testTarget(
             name: "SmoltalkTests",
             dependencies: ["Smoltalk"]),
+        .target(
+            name: "Terp",
+            dependencies: ["Smoltalk"])
     ]
 )

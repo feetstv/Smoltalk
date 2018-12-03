@@ -156,7 +156,7 @@ Smoltalk doesn't depend on anything other than the Swift runtime. The current ve
 
 # Roadmap
 
-- Future versions should make more robust use of Swift's generics system. This would likely induce breaking changes.
+- Future versions should make more robust use of Swift's generics system, if possible
 - Implementing the "missing" features below
 
 ## "Missing" features

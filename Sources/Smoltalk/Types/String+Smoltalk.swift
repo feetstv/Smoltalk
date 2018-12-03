@@ -7,24 +7,67 @@
 
 import Foundation
 
-extension String: SMObject {
-    public var messages: [String: SMSelector] {
+extension String: MessagePassable {
+    public var messages: [String: SelectorInformation] {
         get {
             return [
-                "capitalisedString": SMSelector(argumentType: SMNull.self, returnType: String.self) { _, _ in self.capitalized },
-                "capitalizedString": SMSelector(argumentType: SMNull.self, returnType: String.self) { _, _ in self.capitalized },
-                "lowercaseString": SMSelector(argumentType: SMNull.self, returnType: String.self) { _, _ in self.lowercased() },
-                "ransomNoteString": SMSelector(argumentType: SMNull.self, returnType: String.self) { _, _ in self.enumerated().map { $0.offset % 2 == 0 ? String($0.element).uppercased() : String($0.element).lowercased() }.joined() },
-                "reversedString": SMSelector(argumentType: SMNull.self, returnType: String.self) { _, _ in String(self.reversed()) },
-                "stringWithSwitchedCase": SMSelector(argumentType: SMNull.self, returnType: String.self) { _, _ in self.map { String($0).uppercased() == String($0) ? String($0).lowercased() : String($0).uppercased() }.joined() },
-                "characters": SMSelector(argumentType: SMNull.self, returnType: [String].self) { _, _ in self.map { String($0) } },
-                "componentsSeparatedByString:": SMSelector(argumentType: String.self, returnType: [String].self) { arg, _ in
-                        if let string = arg as? String {
-                            return self.components(separatedBy: string)
-                        } else { return nil }
-                },
-                "uppercaseString": SMSelector(argumentType: SMNull.self, returnType: String.self) { _, _ in self.uppercased() }
+                "capitalizedString": SelectorInformation(argumentType: SMNull.self, returnType: String.self, function: self.capitalizedString),
+                "lowercaseString": SelectorInformation(argumentType: SMNull.self, returnType: String.self, function: self.lowercaseString),
+                "ransomNoteString": SelectorInformation(argumentType: SMNull.self, returnType: String.self, function: self.ransomNoteString),
+                "reversedString": SelectorInformation(argumentType: SMNull.self, returnType: String.self, function: self.reversedString),
+                "characters": SelectorInformation(argumentType: SMNull.self, returnType: [String].self, function: self.characters),
+                "componentsSeparatedByString:": SelectorInformation(argumentType: String.self, returnType: [String].self, function: self.componentsSeparatedByString_),
+                "uppercaseString": SelectorInformation(argumentType: SMNull.self, returnType: String.self, function: self.uppercaseString)
             ]
         }
+    }
+    
+    /**
+     - Returns: (String) A capitalized copy of the string
+     */
+    private func capitalizedString(arg: MessagePassable, userInfo: MessagePassable?) throws -> MessagePassable {
+        return self.capitalized
+    }
+    
+    /**
+     - Returns: (String) A lower-case copy of the string
+     */
+    private func lowercaseString(arg: MessagePassable, userInfo: MessagePassable?) throws -> MessagePassable {
+        return self.lowercased()
+    }
+    
+    /**
+     - Returns: (String) A copy of the string with every letter alternating between upper- and lower-case
+     */
+    private func ransomNoteString(arg: MessagePassable, userInfo: MessagePassable?) throws -> MessagePassable {
+        return self.enumerated().map { $0.offset % 2 == 0 ? String($0.element).uppercased() : String($0.element).lowercased() }.joined()
+    }
+    
+    /**
+     - Returns: (String) A copy of the string with the characters in reverse order
+     */
+    private func reversedString(arg: MessagePassable, userInfo: MessagePassable?) throws -> MessagePassable {
+        return String(self.reversed())
+    }
+    
+    /**
+     - Returns: ([String]) An array containing the characters of the string
+     */
+    private func characters(arg: MessagePassable, userInfo: MessagePassable?) throws -> MessagePassable {
+        return self.map { String($0) }
+    }
+    
+    /**
+     - Returns: ([String]) An array consisting of substrings taken from the string, separated by the given string
+     */
+    private func componentsSeparatedByString_(arg: MessagePassable, userInfo: MessagePassable?) throws -> MessagePassable {
+        return self.components(separatedBy: arg as! String)
+    }
+    
+    /**
+     - Returns: (String) An upper-case copy of the string
+     */
+    private func uppercaseString(arg: MessagePassable, userInfo: MessagePassable?) throws -> MessagePassable {
+        return self.uppercased()
     }
 }

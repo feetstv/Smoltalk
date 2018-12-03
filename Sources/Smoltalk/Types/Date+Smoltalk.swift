@@ -7,62 +7,91 @@
 
 import Foundation
 
-extension Date: SMObject {
-    public var messages: [String: SMSelector] {
+extension Date: MessagePassable {
+    public var messages: [String: SelectorInformation] {
         get {
             return [
-                "dateByAddingTimeInterval:": SMSelector(argumentType: Double.self, returnType: Date.self) { arg, _ in
-                    if let timeInterval = arg as? Double {
-                        return self.addingTimeInterval(timeInterval)
-                    } else {
-                        return nil
-                    }
-                },
-                "dateFromString:": SMSelector(argumentType: String.self, returnType: Date.self) { arg, _ in
-                    if let dateString = arg as? String {
-                        let formatter = DateFormatter()
-                        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
-                        return formatter.date(from: dateString)
-                    } else {
-                        return nil
-                    }
-                },
-                "day": SMSelector(argumentType: SMNull.self, returnType: String.self) { _, _ in self.dateString(.Day)
-                },
-                "dayOfWeekInMonth": SMSelector(argumentType: SMNull.self, returnType: String.self) { _, _ in self.dateString(.DayOfWeekInMonth)
-                },
-                "month": SMSelector(argumentType: SMNull.self, returnType: String.self) { _, _ in self.dateString(.Month)
-                },
-                "quarter": SMSelector(argumentType: SMNull.self, returnType: String.self) { _, _ in self.dateString(.Quarter)
-                },
-                "stringWithFormat:": SMSelector(argumentType: String.self, returnType: String.self) { arg, _ in
-                    if let dateFormat = arg as? String {
-                        let formatter = DateFormatter()
-                        formatter.dateFormat = dateFormat
-                        return formatter.string(from: self)
-                    } else {
-                        return nil
-                    }
-                },
-                "timeIntervalSince1970": SMSelector(argumentType: SMNull.self, returnType: Int.self) { _, _ in self.timeIntervalSince1970
-                },
-                "timeIntervalSinceReferenceDate": SMSelector(argumentType: SMNull.self, returnType: Int.self) { _, _ in self.timeIntervalSinceReferenceDate
-                }
+                "dateAddingTimeInterval:": SelectorInformation(argumentType: Double.self, returnType: Date.self, function: self.dateAddingTimeInterval_),
+                "dateFromString:": SelectorInformation(argumentType: String.self, returnType: Date.self, function: self.dateFromString_),
+                "day": SelectorInformation(argumentType: SMNull.self, returnType: String.self, function: self.day),
+                "dayOfWeekInMonth": SelectorInformation(argumentType: SMNull.self, returnType: String.self, function: self.dayOfWeekInMonth),
+                "month": SelectorInformation(argumentType: SMNull.self, returnType: String.self, function: self.month),
+                "quarter": SelectorInformation(argumentType: SMNull.self, returnType: String.self, function: self.quarter),
+                "year": SelectorInformation(argumentType: SMNull.self, returnType: String.self, function: self.quarter),
+                "today": SelectorInformation(argumentType: SMNull.self, returnType: Date.self, function: self.today),
+                "stringWithFormat:": SelectorInformation(argumentType: String.self, returnType: String.self, function: self.stringWithFormat_),
+                "timeIntervalSince1970": SelectorInformation(argumentType: SMNull.self, returnType: Int.self, function: self.timeIntervalSince1970Function),
+                "timeIntervalSinceReferenceDate": SelectorInformation(argumentType: SMNull.self, returnType: Int.self, function: self.timeIntervalSinceReferenceDateFunction),
+                "timeIntervalSinceDate": SelectorInformation(argumentType: Date.self, returnType: Int.self, function: self.timeIntervalSinceDate_)
             ]
         }
     }
     
-    enum DateFormat {
-        case Day
-        case DayOfWeekInMonth
-        case Month
-        case Quarter
+    private func dateAddingTimeInterval_(arg: MessagePassable, userInfo: MessagePassable?) throws -> MessagePassable {
+        return self.addingTimeInterval(arg as! Double)
     }
     
-    func dateString(_ format: DateFormat) -> String {
+    private func dateFromString_(arg: MessagePassable, userInfo: MessagePassable?) throws -> MessagePassable {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
+        return formatter.date(from: arg as! String)!
+    }
+    
+    private func day(arg: MessagePassable, userInfo: MessagePassable?) throws -> MessagePassable {
+        return self.dateString(.Day)
+    }
+    
+    private func dayOfWeekInMonth(arg: MessagePassable, userInfo: MessagePassable?) throws -> MessagePassable {
+        return self.dateString(.DayOfWeekInMonth)
+    }
+    
+    private func month(arg: MessagePassable, userInfo: MessagePassable?) throws -> MessagePassable {
+        return self.dateString(.Month)
+    }
+    
+    private func quarter(arg: MessagePassable, userInfo: MessagePassable?) throws -> MessagePassable {
+        return self.dateString(.Quarter)
+    }
+    
+    private func year(arg: MessagePassable, userInfo: MessagePassable?) throws -> MessagePassable {
+        return self.dateString(.Year)
+    }
+    
+    private func today(arg: MessagePassable, userInfo: MessagePassable?) throws -> MessagePassable {
+        return Date()
+    }
+    
+    private func stringWithFormat_(arg: MessagePassable, userInfo: MessagePassable?) throws -> MessagePassable {
+        let formatter = DateFormatter()
+        formatter.dateFormat = arg as? String
+        return formatter.string(from: self)
+    }
+    
+    private func timeIntervalSince1970Function(arg: MessagePassable, userInfo: MessagePassable?) throws -> MessagePassable {
+        return self.timeIntervalSince1970
+    }
+    
+    private func timeIntervalSinceReferenceDateFunction(arg: MessagePassable, userInfo: MessagePassable?) throws -> MessagePassable {
+        return self.timeIntervalSinceReferenceDate
+    }
+    
+    private func timeIntervalSinceDate_(arg: MessagePassable, userInfo: MessagePassable?) throws -> MessagePassable {
+        return self.timeIntervalSince(arg as! Date)
+    }
+
+    
+    fileprivate enum DateFormat: String {
+        case Day = "EEEE"
+        case DayOfWeekInMonth = "F"
+        case Month = "MMMM"
+        case Quarter = "QQQQ"
+        case Year = "yyyy"
+    }
+    
+    fileprivate func dateString(_ format: DateFormat) -> String {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "en_NZ")
-        formatter.dateFormat = format == .Day ? "EEEE" : format == .DayOfWeekInMonth ? "F" : format == .Month ? "MMMM" : "QQQQ"
+        formatter.dateFormat = format.rawValue
         return formatter.string(from: self)
     }
 }
