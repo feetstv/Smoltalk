@@ -24,13 +24,16 @@ let package = Package(
         .target(
             name: "Smoltalk",
             dependencies: [],
-            path: "Sources/Smoltalk")
+            path: "Sources/Smoltalk"
+            ),
         .testTarget(
             name: "SmoltalkTests",
-            dependencies: ["Smoltalk"]),
+            dependencies: ["Smoltalk"]
+            ),
         .target(
             name: "Terp",
             dependencies: ["Smoltalk"],
-            path: "Sources/Terp")
+            path: "Sources/Terp"
+            )
     ]
 )
