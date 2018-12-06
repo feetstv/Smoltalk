@@ -13,16 +13,16 @@ public class Runtime {
      Evaluates full Smoltalk expressions. Note: use SMObject's sendMessage(_:argument:userInfo:) function to send a message to a single object.
      
      - Parameters:
-        - expression: A string containing a full expression, including an initial receiver and at least one selector
-        - customObjectDictionary: An optional dictionary containing a mapping of strings to instance of objects implementing SMObject suitable for use as the initial receiver
-        - userInfo: An immutable object implementing SMObject that is present throughout the entire evaluation of the expression. This is readable by every SMFunction called during evaluation.
+     - expression: A string containing a full expression, including an initial receiver and at least one selector
+     - customObjectDictionary: An optional dictionary containing a mapping of strings to instance of objects implementing SMObject suitable for use as the initial receiver
+     - userInfo: An immutable object implementing SMObject that is present throughout the entire evaluation of the expression. This is readable by every SMFunction called during evaluation.
      
      - Throws: Either SMError if there was an issue with the expression, or other Errors thrown by each receiver
      
      - Returns: The resultant SMObject that comes from evaluating the expression.
      */
-    public static func evaluate(expression: String, customObjectDictionary: [String: MessagePassable]?, userInfo: MessagePassable?) throws -> MessagePassable {
-        return try Parser.parse(tokens: Lexer.run(onMessage: expression), customObjectDictionary: customObjectDictionary, userInfo: userInfo)
+    public static func evaluate(expression: String, customObjectDictionary: [String: MessagePassable]?, userInfo: MessagePassable?, delegate: RuntimeDelegate?) throws -> MessagePassable {
+        return try Parser.parse(tokens: Lexer.run(onMessage: expression), customObjectDictionary: customObjectDictionary, userInfo: userInfo, delegate: delegate)
     }
     
     /**
@@ -31,8 +31,8 @@ public class Runtime {
      - Throws: SmoltalkError.NoInitialObject if a suitable object could not be found
      
      - Parameters:
-        - name: The name of the initial object
-        - customObjectDictionary: A dictionary of names of strings as keys, with the values being instances of objects implementing MessagePassable
+     - name: The name of the initial object
+     - customObjectDictionary: A dictionary of names of strings as keys, with the values being instances of objects implementing MessagePassable
      
      - Returns: An object implementing MessagePassable that matches the name parameter
      */
@@ -164,7 +164,7 @@ public class Runtime {
     }
     
     struct Parser {
-        static func parse(tokens: [Token], customObjectDictionary: [String: MessagePassable]?, userInfo: MessagePassable?) throws -> MessagePassable {
+        static func parse(tokens: [Token], customObjectDictionary: [String: MessagePassable]?, userInfo: MessagePassable?, delegate: RuntimeDelegate?) throws -> MessagePassable {
             var object: MessagePassable?
             
             try tokens.enumerated().forEach { token in
@@ -172,18 +172,18 @@ public class Runtime {
                 case .InitialObject(let string):
                     object = try Runtime.initialObjects(string, customObjectDictionary: customObjectDictionary ?? [:])
                 case .Selector(let selector):
-                    object = try object?.sendMessage(selector, argument: nil, userInfo: userInfo)
+                    object = try object?.sendMessage(selector, argument: nil, userInfo: userInfo, delegate: delegate)
                 case .ComplexSelector(let selector, let argument):
                     if argument.hasPrefix("\""), argument.hasSuffix("\"") {
-                        object = try object?.sendMessage(selector, argument: String(argument.prefix(argument.count - 1).suffix(argument.count - 2)), userInfo: userInfo)
+                        object = try object?.sendMessage(selector, argument: String(argument.prefix(argument.count - 1).suffix(argument.count - 2)), userInfo: userInfo, delegate: delegate)
                     } else {
-                        object = try object?.sendMessage(selector, argument: argument, userInfo: userInfo)
+                        object = try object?.sendMessage(selector, argument: argument, userInfo: userInfo, delegate: delegate)
                     }
                 case .ComplexSelectorWithExpression(let selector, let expression):
-                    let result = try Runtime.evaluate(expression: expression, customObjectDictionary: customObjectDictionary, userInfo: userInfo)
-                    object = try object?.sendMessage(selector, argument: result, userInfo: userInfo)
+                    let result = try Runtime.evaluate(expression: expression, customObjectDictionary: customObjectDictionary, userInfo: userInfo, delegate: delegate)
+                    object = try object?.sendMessage(selector, argument: result, userInfo: userInfo, delegate: delegate)
                 case .InnerExpression(let expression):
-                    object = try Runtime.evaluate(expression: expression, customObjectDictionary: customObjectDictionary, userInfo: userInfo)
+                    object = try Runtime.evaluate(expression: expression, customObjectDictionary: customObjectDictionary, userInfo: userInfo, delegate: delegate)
                 }
             }
             
@@ -207,7 +207,7 @@ public class Runtime {
      
      - Returns: The resultant SMObject that comes from evaluating the expression.
      */
-    public static func sendMessage(_ selectorString: String, toReceiver receiver: MessagePassable, argument: MessagePassable?, userInfo: MessagePassable?) throws -> MessagePassable {
+    public static func sendMessage(_ selectorString: String, toReceiver receiver: MessagePassable, argument: MessagePassable?, userInfo: MessagePassable?, delegate: RuntimeDelegate? = nil) throws -> MessagePassable {
         // Merge the default messages with the object's own messages, giving priority to the defaults
         // Get the SMSelector associated with a given selector
         if let selectorContainer = receiver.defaultMessages.merging(receiver.messages, uniquingKeysWith: { original, _ in original }).first(where: { (selector, _) in
@@ -229,7 +229,6 @@ public class Runtime {
                     if let attemptedConversion = converted {
                         usableArgument = attemptedConversion
                         print("Notice: converted \(type(of: attemptedArgument)) to \(selectorContainer.value.argumentType)")
-                        
                     } else if selectorContainer.value.argumentType != type(of: attemptedArgument){
                         throw SmoltalkError.UnexpectedArgumentType(selectorString, selectorContainer.value.argumentType, type(of: attemptedArgument))
                     }
@@ -239,6 +238,8 @@ public class Runtime {
             }
             
             // Evaluate!
+            let error = delegate?.canRunFunction(selectorContainer.value, userInfo: userInfo)
+            guard error == nil else { throw error! }
             let result = try selectorContainer.value.function(usableArgument ?? SMNull.standard, userInfo)
             if selectorContainer.value.returnType == SMNull.self || selectorContainer.value.returnType == SMAny.self || type(of: result) == selectorContainer.value.returnType {
                 return result
@@ -249,4 +250,8 @@ public class Runtime {
             throw SmoltalkError.UnrecognisedSelector(selectorString, receiver)
         }
     }
+}
+
+public protocol RuntimeDelegate {
+    func canRunFunction(_ selectorInformation: SelectorInformation, userInfo: MessagePassable?) -> Error?
 }

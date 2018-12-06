@@ -1,6 +1,6 @@
 //
 //  SMError.swift
-//  
+//
 //
 //  Created by Jaesan Ryfle-Turi on 1/12/18.
 //
@@ -36,6 +36,9 @@ public enum SmoltalkError: LocalizedError {
     /// Thrown when the return type of the value returned from evaluating an expression is not the expected type
     case UnexpectedReturnType(MessagePassable.Type, String, MessagePassable.Type, MessagePassable.Type)
     
+    /// Thrown when an unexpected error occurs
+    case UnexpectedError
+    
     public var errorDescription: String? {
         get {
             switch self {
@@ -65,6 +68,9 @@ public enum SmoltalkError: LocalizedError {
                 
             case .UnexpectedReturnType(let receiver, let expression, let expectedType, let returnedType):
                 return "[\(String(describing: receiver)) \(expression)]: Expression expected to return value of type \(String(describing: expectedType)) but returned \(String(describing: returnedType))"
+                
+            case .UnexpectedError:
+                return "Unexpected Smoltalk error"
             }
         }
     }

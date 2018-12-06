@@ -14,7 +14,7 @@ public protocol MessagePassable {
      */
     var messages: [String: SelectorInformation] { get }
     
-    func sendMessage(_ selectorString: String, argument: MessagePassable?, userInfo: MessagePassable?) throws -> MessagePassable
+    func sendMessage(_ selectorString: String, argument: MessagePassable?, userInfo: MessagePassable?, delegate: RuntimeDelegate?) throws -> MessagePassable
 }
 
 extension MessagePassable {
@@ -66,8 +66,8 @@ extension MessagePassable {
      
      - Returns: The resultant MessagePassable that comes from evaluating the expression.
      */
-    public func sendMessage(_ selectorString: String, argument: MessagePassable?, userInfo: MessagePassable?) throws -> MessagePassable {
+    public func sendMessage(_ selectorString: String, argument: MessagePassable?, userInfo: MessagePassable?, delegate: RuntimeDelegate? = nil) throws -> MessagePassable {
         // This function actually just passes off to SMRuntime internally
-        return try Runtime.sendMessage(selectorString, toReceiver: self, argument: argument, userInfo: userInfo)
+        return try Runtime.sendMessage(selectorString, toReceiver: self, argument: argument, userInfo: userInfo, delegate: delegate)
     }
 }
