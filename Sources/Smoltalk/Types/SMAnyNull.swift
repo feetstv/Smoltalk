@@ -12,10 +12,13 @@ public struct SMNull: MessagePassable {
     private init() { }
     
     public var messages: [String: SelectorInformation] = [:]
+    public var messageAliases: [String : String] = [:]
 }
 
 public struct SMAny: MessagePassable {
+    
     public static var standard: SMAny = SMAny()
     private init() { }
     public var messages: [String: SelectorInformation] = [:]
+    public var messageAliases: [String : String] = [:]
 }

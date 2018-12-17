@@ -14,6 +14,11 @@ public protocol MessagePassable {
      */
     var messages: [String: SelectorInformation] { get }
     
+    /** A dictionary representing aliases to messages.
+     The key is a string. The value is a string representing the selector from the messages dictionary.
+     */
+    var messageAliases: [String: String] { get }
+    
     func sendMessage(_ selectorString: String, argument: MessagePassable?, userInfo: MessagePassable?, delegate: RuntimeDelegate?) throws -> MessagePassable
 }
 
@@ -23,8 +28,7 @@ extension MessagePassable {
         get {
             return [
                 "description": SelectorInformation(argumentType: SMNull.self, returnType: String.self, function: self.description),
-                "selectors": SelectorInformation(argumentType: SMNull.self, returnType: String.self, function: self.selectors),
-                "respondsToSelector:": SelectorInformation(argumentType: String.self, returnType: Bool.self, function: self.respondsToSelector),
+                "selectors": SelectorInformation(argumentType: SMNull.self, returnType: String.self, function: self.selectors)
             ]
         }
     }
@@ -41,15 +45,6 @@ extension MessagePassable {
      */
     private func selectors(arg: MessagePassable, userInfo: MessagePassable?) throws -> MessagePassable {
         return "**Selectors**\n\(self.defaultMessages.merging(self.messages, uniquingKeysWith: { original, _ in original }).map { "- \($0.key)\($0.value.argumentType != SMNull.self ? " \($0.value.argumentType)" : $0.value.argumentType == SMAny.self ? "Any" : "") \($0.value.returnType != SMNull.self ? "-> \($0.value.returnType)" : $0.value.returnType == SMAny.self ? "Any" : "")" }.sorted().joined(separator: "\n"))"
-    }
-    
-    /**
-     - Parameter arg: A selector
-     
-     - Returns: A boolean describing whether or not the receiver responds to a given selector.
-     */
-    private func respondsToSelector(arg: MessagePassable, userInfo: MessagePassable?) throws -> MessagePassable {
-        return self.messages.keys.contains(arg as! String)
     }
 }
 

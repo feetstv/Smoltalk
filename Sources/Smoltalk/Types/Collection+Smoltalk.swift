@@ -23,19 +23,19 @@ enum CollectionError: LocalizedError {
 
 extension Array: MessagePassable {
     public var messages: [String: SelectorInformation] {
-        get {
-            return [
-                "appending:": SelectorInformation(argumentType: SMAny.self, returnType: Array.self, function: self.appending_),
-                "count": SelectorInformation(argumentType: SMNull.self, returnType: Int.self, function: self.count),
-                "componentsJoinedByString:": SelectorInformation(argumentType: String.self, returnType: String.self, function: self.componentsJoinedByString_),
-                "map:": SelectorInformation(argumentType: String.self, returnType: Array.self, function: self.map_),
-                "randomElement": SelectorInformation(argumentType: SMNull.self, returnType: SMAny.self, function: self.randomElement),
-                "reversedArray": SelectorInformation(argumentType: SMNull.self, returnType: Array.self, function: self.reversedArray),
-                "shuffledArray": SelectorInformation(argumentType: SMNull.self, returnType: Array.self, function: self.shuffledArray),
-                "elementAtIndex:": SelectorInformation(argumentType: Int.self, returnType: SMAny.self, function: self.elementAtIndex_)
-            ]
-        }
+        return [
+            "appending:": SelectorInformation(argumentType: SMAny.self, returnType: Array.self, function: self.appending_),
+            "count": SelectorInformation(argumentType: SMNull.self, returnType: Int.self, function: self.count),
+            "componentsJoinedByString:": SelectorInformation(argumentType: String.self, returnType: String.self, function: self.componentsJoinedByString_),
+            "map:": SelectorInformation(argumentType: String.self, returnType: Array.self, function: self.map_),
+            "randomElement": SelectorInformation(argumentType: SMNull.self, returnType: SMAny.self, function: self.randomElement),
+            "reversedArray": SelectorInformation(argumentType: SMNull.self, returnType: Array.self, function: self.reversedArray),
+            "shuffledArray": SelectorInformation(argumentType: SMNull.self, returnType: Array.self, function: self.shuffledArray),
+            "elementAtIndex:": SelectorInformation(argumentType: Int.self, returnType: SMAny.self, function: self.elementAtIndex_)
+        ]
     }
+    
+    public var messageAliases: [String : String] { return [:] }
     
     /**
      - Parameter arg: (Object) The object to append to the array
@@ -116,17 +116,17 @@ extension Array: MessagePassable {
 
 extension Dictionary: MessagePassable where Key == String {
     public var messages: [String: SelectorInformation] {
-        get {
-            return [
-                "count": SelectorInformation(argumentType: SMNull.self, returnType: Int.self, function: self.count),
-                "componentsJoinedByString:": SelectorInformation(argumentType: String.self, returnType: String.self, function: self.componentsJoinedByString_),
-                "keys": SelectorInformation(argumentType: SMNull.self, returnType: [String].self, function: self.keysFunction),
-                "randomElement": SelectorInformation(argumentType: SMNull.self, returnType: SMAny.self, function: self.randomElement),
-                "values": SelectorInformation(argumentType: SMNull.self, returnType: [MessagePassable].self, function: self.valuesFunction),
-                "elementForKey:": SelectorInformation(argumentType: String.self, returnType: SMAny.self, function: self.elementForKey_)
-            ]
-        }
+        return [
+            "count": SelectorInformation(argumentType: SMNull.self, returnType: Int.self, function: self.count),
+            "componentsJoinedByString:": SelectorInformation(argumentType: String.self, returnType: String.self, function: self.componentsJoinedByString_),
+            "keys": SelectorInformation(argumentType: SMNull.self, returnType: [String].self, function: self.keysFunction),
+            "randomElement": SelectorInformation(argumentType: SMNull.self, returnType: SMAny.self, function: self.randomElement),
+            "values": SelectorInformation(argumentType: SMNull.self, returnType: [MessagePassable].self, function: self.valuesFunction),
+            "elementForKey:": SelectorInformation(argumentType: String.self, returnType: SMAny.self, function: self.elementForKey_)
+        ]
     }
+    
+    public var messageAliases: [String : String] { return [:] }
     
     /**
      - Returns: (Int) The number of elements in the array

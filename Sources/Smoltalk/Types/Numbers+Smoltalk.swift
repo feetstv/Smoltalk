@@ -24,17 +24,17 @@ fileprivate protocol SMNumber {
 
 extension Int: MessagePassable {
     public var messages: [String: SelectorInformation] {
-        get {
-            return [
-                "adding:": SelectorInformation(argumentType: Double.self, returnType: Double.self, function: self.adding_),
-                "doubleValue": SelectorInformation(argumentType: SMNull.self, returnType: Double.self, function: self.doubleValue),
-                "subtracting:": SelectorInformation(argumentType: Double.self, returnType: Double.self, function: self.subtracting_),
-                "multipliedBy:": SelectorInformation(argumentType: Double.self, returnType: Double.self, function: self.multipliedBy_),
-                "dividedBy:": SelectorInformation(argumentType: Double.self, returnType: Double.self, function: self.dividedBy_),
-                "squareRoot": SelectorInformation(argumentType: SMNull.self, returnType: Double.self, function: self.squareRoot)
-            ]
-        }
+        return [
+            "adding:": SelectorInformation(argumentType: Double.self, returnType: Double.self, function: self.adding_),
+            "doubleValue": SelectorInformation(argumentType: SMNull.self, returnType: Double.self, function: self.doubleValue),
+            "subtracting:": SelectorInformation(argumentType: Double.self, returnType: Double.self, function: self.subtracting_),
+            "multipliedBy:": SelectorInformation(argumentType: Double.self, returnType: Double.self, function: self.multipliedBy_),
+            "dividedBy:": SelectorInformation(argumentType: Double.self, returnType: Double.self, function: self.dividedBy_),
+            "squareRoot": SelectorInformation(argumentType: SMNull.self, returnType: Double.self, function: self.squareRoot)
+        ]
     }
+    
+    public var messageAliases: [String : String] { return [:] }
     
     /**
      - Parameter arg: (Double) The number to add to the current value
@@ -89,17 +89,17 @@ extension Int: MessagePassable {
 
 extension Double: MessagePassable {
     public var messages: [String: SelectorInformation] {
-        get {
-            return [
-                "adding:": SelectorInformation(argumentType: Double.self, returnType: Double.self, function: self.adding_),
-                "intValue": SelectorInformation(argumentType: SMNull.self, returnType: Int.self, function: self.intValue),
-                "subtracting:": SelectorInformation(argumentType: Double.self, returnType: Double.self, function: self.subtracting_),
-                "multipliedBy:": SelectorInformation(argumentType: Double.self, returnType: Double.self, function: self.multipliedBy_),
-                "dividedBy:": SelectorInformation(argumentType: Double.self, returnType: Double.self, function: self.dividedBy_),
-                "squareRoot": SelectorInformation(argumentType: SMNull.self, returnType: Double.self, function: self.squareRoot)
-            ]
-        }
+        return [
+            "adding:": SelectorInformation(argumentType: Double.self, returnType: Double.self, function: self.adding_),
+            "intValue": SelectorInformation(argumentType: SMNull.self, returnType: Int.self, function: self.intValue),
+            "subtracting:": SelectorInformation(argumentType: Double.self, returnType: Double.self, function: self.subtracting_),
+            "multipliedBy:": SelectorInformation(argumentType: Double.self, returnType: Double.self, function: self.multipliedBy_),
+            "dividedBy:": SelectorInformation(argumentType: Double.self, returnType: Double.self, function: self.dividedBy_),
+            "squareRoot": SelectorInformation(argumentType: SMNull.self, returnType: Double.self, function: self.squareRoot)
+        ]
     }
+    
+    public var messageAliases: [String : String] { return [:] }
     
     /**
      - Parameter arg: (Double) The number to add to the current value

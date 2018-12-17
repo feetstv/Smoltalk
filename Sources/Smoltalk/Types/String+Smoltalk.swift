@@ -9,18 +9,18 @@ import Foundation
 
 extension String: MessagePassable {
     public var messages: [String: SelectorInformation] {
-        get {
-            return [
-                "capitalizedString": SelectorInformation(argumentType: SMNull.self, returnType: String.self, function: self.capitalizedString),
-                "lowercaseString": SelectorInformation(argumentType: SMNull.self, returnType: String.self, function: self.lowercaseString),
-                "ransomNoteString": SelectorInformation(argumentType: SMNull.self, returnType: String.self, function: self.ransomNoteString),
-                "reversedString": SelectorInformation(argumentType: SMNull.self, returnType: String.self, function: self.reversedString),
-                "characters": SelectorInformation(argumentType: SMNull.self, returnType: [String].self, function: self.characters),
-                "componentsSeparatedByString:": SelectorInformation(argumentType: String.self, returnType: [String].self, function: self.componentsSeparatedByString_),
-                "uppercaseString": SelectorInformation(argumentType: SMNull.self, returnType: String.self, function: self.uppercaseString)
-            ]
-        }
+        return [
+            "capitalizedString": SelectorInformation(argumentType: SMNull.self, returnType: String.self, function: self.capitalizedString),
+            "lowercaseString": SelectorInformation(argumentType: SMNull.self, returnType: String.self, function: self.lowercaseString),
+            "ransomNoteString": SelectorInformation(argumentType: SMNull.self, returnType: String.self, function: self.ransomNoteString),
+            "reversedString": SelectorInformation(argumentType: SMNull.self, returnType: String.self, function: self.reversedString),
+            "characters": SelectorInformation(argumentType: SMNull.self, returnType: [String].self, function: self.characters),
+            "componentsSeparatedByString:": SelectorInformation(argumentType: String.self, returnType: [String].self, function: self.componentsSeparatedByString_),
+            "uppercaseString": SelectorInformation(argumentType: SMNull.self, returnType: String.self, function: self.uppercaseString)
+        ]
     }
+    
+    public var messageAliases: [String : String] { return [:] }
     
     /**
      - Returns: (String) A capitalized copy of the string

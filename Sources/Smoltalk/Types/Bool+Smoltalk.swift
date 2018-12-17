@@ -9,13 +9,13 @@ import Foundation
 
 extension Bool: MessagePassable {
     public var messages: [String: SelectorInformation] {
-        get {
-            return [
-                "invertedBool": SelectorInformation(argumentType: SMNull.self, returnType: Bool.self, function: self.inverted),
-                "intValue": SelectorInformation(argumentType: SMNull.self, returnType: Int.self, function: self.intValue)
-            ]
-        }
+        return [
+            "invertedBool": SelectorInformation(argumentType: SMNull.self, returnType: Bool.self, function: self.inverted),
+            "intValue": SelectorInformation(argumentType: SMNull.self, returnType: Int.self, function: self.intValue)
+        ]
     }
+    
+    public var messageAliases: [String : String] { return [:] }
     
     /**
      - Returns: (Bool) The opposite value of the current boolean: true if false, false if true

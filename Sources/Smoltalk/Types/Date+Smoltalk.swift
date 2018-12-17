@@ -9,22 +9,29 @@ import Foundation
 
 extension Date: MessagePassable {
     public var messages: [String: SelectorInformation] {
-        get {
-            return [
-                "dateAddingTimeInterval:": SelectorInformation(argumentType: Double.self, returnType: Date.self, function: self.dateAddingTimeInterval_),
-                "dateFromString:": SelectorInformation(argumentType: String.self, returnType: Date.self, function: self.dateFromString_),
-                "day": SelectorInformation(argumentType: SMNull.self, returnType: String.self, function: self.day),
-                "dayOfWeekInMonth": SelectorInformation(argumentType: SMNull.self, returnType: String.self, function: self.dayOfWeekInMonth),
-                "month": SelectorInformation(argumentType: SMNull.self, returnType: String.self, function: self.month),
-                "quarter": SelectorInformation(argumentType: SMNull.self, returnType: String.self, function: self.quarter),
-                "year": SelectorInformation(argumentType: SMNull.self, returnType: String.self, function: self.quarter),
-                "today": SelectorInformation(argumentType: SMNull.self, returnType: Date.self, function: self.today),
-                "stringWithFormat:": SelectorInformation(argumentType: String.self, returnType: String.self, function: self.stringWithFormat_),
-                "timeIntervalSince1970": SelectorInformation(argumentType: SMNull.self, returnType: Int.self, function: self.timeIntervalSince1970Function),
-                "timeIntervalSinceReferenceDate": SelectorInformation(argumentType: SMNull.self, returnType: Int.self, function: self.timeIntervalSinceReferenceDateFunction),
-                "timeIntervalSinceDate": SelectorInformation(argumentType: Date.self, returnType: Int.self, function: self.timeIntervalSinceDate_)
-            ]
-        }
+        return [
+            "dateAddingTimeInterval:": SelectorInformation(argumentType: Double.self, returnType: Date.self, function: self.dateAddingTimeInterval_),
+            "dateFromString:": SelectorInformation(argumentType: String.self, returnType: Date.self, function: self.dateFromString_),
+            "day": SelectorInformation(argumentType: SMNull.self, returnType: String.self, function: self.day),
+            "dayOfWeekInMonth": SelectorInformation(argumentType: SMNull.self, returnType: String.self, function: self.dayOfWeekInMonth),
+            "month": SelectorInformation(argumentType: SMNull.self, returnType: String.self, function: self.month),
+            "quarter": SelectorInformation(argumentType: SMNull.self, returnType: String.self, function: self.quarter),
+            "year": SelectorInformation(argumentType: SMNull.self, returnType: String.self, function: self.quarter),
+            "today": SelectorInformation(argumentType: SMNull.self, returnType: Date.self, function: self.today),
+            "stringWithFormat:": SelectorInformation(argumentType: String.self, returnType: String.self, function: self.stringWithFormat_),
+            "timeIntervalSince1970": SelectorInformation(argumentType: SMNull.self, returnType: Int.self, function: self.timeIntervalSince1970Function),
+            "timeIntervalSinceReferenceDate": SelectorInformation(argumentType: SMNull.self, returnType: Int.self, function: self.timeIntervalSinceReferenceDateFunction),
+            "timeIntervalSinceDate": SelectorInformation(argumentType: Date.self, returnType: Int.self, function: self.timeIntervalSinceDate_)
+        ]
+    }
+    
+    public var messageAliases: [String : String] {
+        return [
+            "day": "day",
+            "month": "month",
+            "year": "year",
+            "epochtime": "timeIntervalSince1970"
+        ]
     }
     
     /**
