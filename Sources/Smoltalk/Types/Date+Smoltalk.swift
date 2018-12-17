@@ -19,9 +19,9 @@ extension Date: MessagePassable {
             "year": SelectorInformation(argumentType: SMNull.self, returnType: String.self, function: self.quarter),
             "today": SelectorInformation(argumentType: SMNull.self, returnType: Date.self, function: self.today),
             "stringWithFormat:": SelectorInformation(argumentType: String.self, returnType: String.self, function: self.stringWithFormat_),
-            "timeIntervalSince1970": SelectorInformation(argumentType: SMNull.self, returnType: Int.self, function: self.timeIntervalSince1970Function),
-            "timeIntervalSinceReferenceDate": SelectorInformation(argumentType: SMNull.self, returnType: Int.self, function: self.timeIntervalSinceReferenceDateFunction),
-            "timeIntervalSinceDate": SelectorInformation(argumentType: Date.self, returnType: Int.self, function: self.timeIntervalSinceDate_)
+            "timeIntervalSince1970": SelectorInformation(argumentType: SMNull.self, returnType: Double.self, function: self.timeIntervalSince1970Function),
+            "timeIntervalSinceReferenceDate": SelectorInformation(argumentType: SMNull.self, returnType: Double.self, function: self.timeIntervalSinceReferenceDateFunction),
+            "timeIntervalSinceDate:": SelectorInformation(argumentType: Date.self, returnType: Double.self, function: self.timeIntervalSinceDate_)
         ]
     }
     
@@ -30,7 +30,8 @@ extension Date: MessagePassable {
             "day": "day",
             "month": "month",
             "year": "year",
-            "epochtime": "timeIntervalSince1970"
+            "epochtime": "timeIntervalSince1970",
+            "secondsSince": "timeIntervalSinceDate:"
         ]
     }
     

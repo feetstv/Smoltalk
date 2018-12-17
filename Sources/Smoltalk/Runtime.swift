@@ -9,6 +9,16 @@ import Foundation
 
 /// The "runtime"; this class encapsulates a few enums, structs, and functions to efficiently evaluate full expressions (rather than simple messages sent to individual objects)
 public class Runtime {
+    static var defaultObjectDictionary: [String: MessagePassable] {
+        return [
+            "Bool": true,
+            "Date": Date(),
+            "Int": 0,
+            "Double": 0.0,
+            "String": ""
+        ]
+    }
+    
     /**
      Evaluates full Smoltalk expressions. Note: use SMObject's sendMessage(_:argument:userInfo:) function to send a message to a single object.
      
@@ -23,6 +33,33 @@ public class Runtime {
      */
     public static func evaluate(expression: String, customObjectDictionary: [String: MessagePassable]?, userInfo: MessagePassable?, delegate: RuntimeDelegate?) throws -> MessagePassable {
         return try Parser.parse(tokens: Lexer.run(onMessage: expression), customObjectDictionary: customObjectDictionary, userInfo: userInfo, delegate: delegate)
+    }
+    
+    /**
+     Evaluates a partial Smoltalk expression using a message alias. Note: use SMObject's sendMessage(_:argument:userInfo:) function to send a message to a single object.
+     
+     - Parameters:
+     - expression: A string containing a full expression, including an initial receiver and at least one selector
+     - customObjectDictionary: An optional dictionary containing a mapping of strings to instance of objects implementing SMObject suitable for use as the initial receiver
+     - userInfo: An immutable object implementing SMObject that is present throughout the entire evaluation of the expression. This is readable by every SMFunction called during evaluation.
+     
+     - Throws: Either SMError if there was an issue with the expression, or other Errors thrown by each receiver
+     
+     - Returns: The resultant SMObject that comes from evaluating the expression.
+     */
+    public static func evaluate(aliasedExpression: String, customObjectDictionary: [String: MessagePassable]?, userInfo: MessagePassable?, delegate: RuntimeDelegate?) throws -> MessagePassable {
+        if let alias = aliasedExpression.components(separatedBy: " ").first {
+            
+            guard let match = Runtime.defaultObjectDictionary.merging(customObjectDictionary ?? [:], uniquingKeysWith: { original, new in original }).first(where: { $0.value.messageAliases.keys.contains(alias) }) else {
+                throw SmoltalkError.UnrecognisedAlias(alias)
+            }
+            
+            let fullExpression = "\(match.key) \(match.value.messageAliases[alias]!)\(aliasedExpression.components(separatedBy: " ").count > 1 ? " \(aliasedExpression.components(separatedBy: " ").dropFirst().joined(separator: " "))" : "")"
+            
+            return try Runtime.evaluate(expression: fullExpression, customObjectDictionary: customObjectDictionary, userInfo: userInfo, delegate: delegate)
+        } else {
+            throw SmoltalkError.UnexpectedError
+        }
     }
     
     /**

@@ -12,6 +12,9 @@ public enum SmoltalkError: LocalizedError {
     /// Thrown when the given SMObject does not respond to the given selector
     case UnrecognisedSelector(String, MessagePassable)
     
+    /// Thrown when no MessagePassable object could be found responding to a given message alias
+    case UnrecognisedAlias(String)
+    
     /// Thrown when an entire expression returns nil
     case ExpressionReturnedNil
     
@@ -44,6 +47,9 @@ public enum SmoltalkError: LocalizedError {
             switch self {
             case .UnrecognisedSelector(let selector, let object):
                 return "[\(type(of: object)) <- \(selector)]: unrecognised selector"
+                
+            case .UnrecognisedAlias(let alias):
+                return "[\(alias)]: unrecognised message alias"
                 
             case .ExpressionReturnedNil:
                 return "Expression returned nil"
