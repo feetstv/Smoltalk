@@ -20,7 +20,12 @@ while state == ProgramState.Running {
     if let input = readLine(strippingNewline: true) {
         if input.lowercased() == "q" { state = ProgramState.ShouldQuit } else {
             do {
-                let result = try Runtime.evaluate(expression: input, customObjectDictionary: nil, userInfo: nil, delegate: nil)
+                let result: MessagePassable?
+                if input.first! == "+" {
+                    result = try Runtime.evaluate(aliasedExpression: String(input.dropFirst()), customObjectDictionary: nil, userInfo: nil, delegate: nil)
+                } else {
+                    result = try Runtime.evaluate(expression: input, customObjectDictionary: nil, userInfo: nil, delegate: nil)
+                }
                 print("Result: \(String(describing: result))\n")
             } catch {
                 if error is LocalizedError { print("Error: \((error as! LocalizedError).errorDescription ?? "")\n" ) }
