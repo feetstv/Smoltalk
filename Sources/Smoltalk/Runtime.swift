@@ -101,34 +101,38 @@ public class Runtime {
     }
     
     struct Lexer {
-        static func run(onMessage message: String, object: MessagePassable? = nil, components: [String] = [], nextToken: String? = nil, writingQuote: Bool = false, writingInnerMessage: Bool = false, expectSpace: Bool = false, level: Int = 0) throws -> [Token] {
+        static func run(onMessage message: String, object: MessagePassable? = nil) throws -> [Token] {
             var object: MessagePassable? = object
-            var components = components
-            var nextToken = nextToken
-            var writingQuote = writingQuote
-            var writingInnerMessage = writingInnerMessage
-            var expectSpace = expectSpace
-            var level = level
+            var components: [String] = []
+            var nextToken = ""
+            var writingQuote = false
+            var writingInnerMessage = false
+            var expectSpace = false
+            var level = 0
             
             func addCharacter(_ character: Character) {
-                nextToken = (nextToken ?? "") + String(character)
+                nextToken = nextToken + String(character)
+                print(nextToken)
             }
             
             let tokens = message.enumerated().reduce([Token]()) { (tokens, character) in
+                print("\(character.offset): \(character.element) -> \(nextToken)")
                 var appendableTokens: [Token]? = nil
                 
                 if character.element == ":" || character.element == "\"" {
+                    print("Adding \'\(character.element)\'")
                     addCharacter(character.element)
                     if character.element == ":" {
                         // expectSpace = false
                     } else if character.element == "\"" {
                         expectSpace = true
                         writingQuote = true
-                        if writingQuote, let quote = nextToken, quote.count > 1, quote.hasPrefix("\""), quote.hasSuffix("\"") {
+                        if writingQuote, nextToken.count > 1, nextToken.hasPrefix("\""), nextToken.hasSuffix("\"") {
                             writingQuote = false
                             expectSpace = false
-                            if let newTokens = append(quote) {
+                            if let newTokens = append(nextToken) {
                                 appendableTokens = newTokens
+                                print("Found new token after colon")
                             }
                         }
                     }
@@ -139,32 +143,41 @@ public class Runtime {
                             writingInnerMessage = true
                         }
                         expectSpace = true
+                        print("Adding \'\(character.element)\'")
                         addCharacter(character.element)
                     } else if writingInnerMessage, character.element == "]" {
+                        print("Adding \'\(character.element)\'")
                         addCharacter(character.element)
                         level = level - 1
-                        if level == 0, nextToken != nil {
+                        if level == 0, nextToken.count > 1 {
                             writingInnerMessage = false
                             expectSpace = false
-                            if let newTokens = append(nextToken!) {
+                            if let newTokens = append(nextToken) {
                                 appendableTokens = newTokens
+                                print("Found new token after bracket")
                             }
                         }
                     }
                 } else if character.element == " " {
                     if expectSpace {
+                        print("Adding \'\(character.element)\'")
                         addCharacter(character.element)
                         expectSpace = writingQuote || writingInnerMessage
-                    } else if nextToken != nil {
-                        if let newTokens = append(nextToken!) {
+                    } else if nextToken.count > 0 {
+                        print("Next token not nil, it's \(nextToken)")
+                        if let newTokens = append(nextToken) {
                             appendableTokens = newTokens
+                            print("Found new token after space")
                         }
                     }
                 } else {
+                    print("Adding \'\(character.element)\'")
                     addCharacter(character.element)
-                    if character.offset == message.count - 1, nextToken != nil {
-                        if let newTokens = append(nextToken!) {
+                    if character.offset == message.count - 1, nextToken.count > 0 {
+                        print("Next token not nil, it's \(nextToken)")
+                        if let newTokens = append(nextToken) {
                             appendableTokens = newTokens
+                            print("Found new token")
                         }
                     }
                 }
@@ -174,7 +187,7 @@ public class Runtime {
             
             func append(_ component: String) -> [Token]? {
                 components.append(component)
-                nextToken = nil
+                nextToken = ""
                 
                 if components.count > 1 {
                     if components[components.count - 1].hasSuffix(":") {
